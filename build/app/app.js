@@ -83,7 +83,6 @@ angular.module('profiler', ['profiler.services']).controller('ProfileController'
 
   $scope.showPressClick = function () {
     d3.selectAll('.pressChart').remove();
-
     AJAX.getPressTimes().then(function (res) {
       console.log(res[res.length - 1]);
       Graph.generateGraph(res[res.length - 1]);

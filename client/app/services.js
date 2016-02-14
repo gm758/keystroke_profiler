@@ -72,8 +72,10 @@ angular.module('profiler.services', [])
         };
         return obj;
       }
+
       data = data || createTestData();
       let dataEntries = processPressTimes(data);
+      dataEntries = dataEntries.sort((a, b) => a.key.localeCompare(b.key));
 
       const margin ={top:20, right:30, bottom:30, left:40},
           width=960-margin.left - margin.right, 
@@ -90,6 +92,7 @@ angular.module('profiler.services', [])
                     .classed('pressChart', true)
                     .attr("width", width+(2*margin.left)+margin.right)    //set width
                     .attr("height", height+margin.top+margin.bottom);  //set height
+
       const xAxis = d3.svg.axis()
                     .scale(x)
                     .orient("bottom");  //orient bottom because x-axis will appear below the bars
@@ -98,7 +101,7 @@ angular.module('profiler.services', [])
                     .scale(y)
                     .orient("left");
 
-      console.log(dataEntries.map(d => d.key));
+      console.log('data', dataEntries.map(d => d.key));
       x.domain(dataEntries.map(d => d.key));
       y.domain([0, d3.max(dataEntries, d => d.value)]);
 

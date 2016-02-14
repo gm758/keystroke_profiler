@@ -82,8 +82,12 @@ angular.module('profiler.services', []).factory('AJAX', function ($http) {
       };
       return obj;
     }
+
     data = data || createTestData();
     var dataEntries = processPressTimes(data);
+    dataEntries = dataEntries.sort(function (a, b) {
+      return a.key.localeCompare(b.key);
+    });
 
     var margin = { top: 20, right: 30, bottom: 30, left: 40 },
         width = 960 - margin.left - margin.right,
@@ -98,10 +102,14 @@ angular.module('profiler.services', []).factory('AJAX', function ($http) {
     var chart = d3.select("#chart").append("svg") //append svg element inside #chart
     .classed('pressChart', true).attr("width", width + 2 * margin.left + margin.right) //set width
     .attr("height", height + margin.top + margin.bottom); //set height
+
     var xAxis = d3.svg.axis().scale(x).orient("bottom"); //orient bottom because x-axis will appear below the bars
 
     var yAxis = d3.svg.axis().scale(y).orient("left");
 
+    console.log('data', dataEntries.map(function (d) {
+      return d.key;
+    }));
     x.domain(dataEntries.map(function (d) {
       return d.key;
     }));
