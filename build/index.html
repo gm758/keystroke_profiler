@@ -4,6 +4,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Keystroke Profiler</title>
+    <link rel="stylesheet" href="styles/style.css">
     <!-- <link href="bower_components/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
     <script src="bower_components/bootstrap/dist/js/bootstrap.min.js"></script> -->
@@ -13,10 +14,10 @@
   <div class="container" ng-controller="ProfileController">
     <h1>Keystroke Profiler</h1>
     <div class="prompt">
-      <span ng-class="$index === wordNum ? 'test' : 'a'" ng-repeat="word in prompt track by $index">{{ word }} </span>
+      <span ng-class="{'selected': selected.id == $index}" ng-repeat="word in prompt track by $index">{{ word }} </span>
     </div>
     <div class="input">
-      <textarea type="text" ng-model="textarea"></textarea>
+      <textarea type="text" ng-model="textarea" ng-keypress="press($event)"></textarea>
       {{ textarea }}
     </div>
   </div>

@@ -6,8 +6,13 @@ angular.module('profiler', [
       $scope.prompt = data.split(' ');
     });
 
-    $scope.selected = {id: 1};
-    // $scope.setSelected = function(id) {
-    //   $scope.selected.id = id;
-    // }
+    $scope.selected = {id: 0};
+    $scope.press = (event) => {
+      let key = String.fromCharCode(event.charCode);
+      if (key === ' ') {
+        $scope.selected.id++;
+      }
+    }
+
+
   });
