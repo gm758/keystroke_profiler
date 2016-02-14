@@ -23,14 +23,16 @@
       <button ng-click="showTransClick()">Show Transitions</button>
       <button ng-click="showPressClick()">Show Press Times</button>
     </div>
-    
-    <svg class="chart"></svg>
+
+    <div id="chart"></svg>
 
   </div>
 
+  <script src="bower_components/underscore/underscore-min.js"></script>
   <script src="http://d3js.org/d3.v3.js"></script>
   <script src="bower_components/angular/angular.js"></script>
   <script src="bower_components/angular-route/angular-route.js"></script>
+  <script src="app/pressTimeVis.js"></script>
   <script src="app/services.js"></script>
   <script src="app/app.js"></script>
 
