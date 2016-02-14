@@ -35,7 +35,8 @@ angular.module('profiler', [
             transitionTime[lastKey][key] = [elapsed];
           }
         } else {
-          transitionTime[lastKey] = {key: [elapsed]};
+          transitionTime[lastKey] = {};
+          transitionTime[lastKey][key] = [elapsed];
         }
         console.log(transitionTime);
       }
