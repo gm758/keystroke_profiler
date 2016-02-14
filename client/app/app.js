@@ -9,7 +9,7 @@ angular.module('profiler', [
     $scope.selected = {id: 0};
 
     let pressTimes = {};
-    let transition_time = {};
+    let transitionTime = {};
     let lastKey = '';
     let key = '';
     let timeDown;
@@ -22,17 +22,18 @@ angular.module('profiler', [
         key = String.fromCharCode(event.which);
         timeDown = event.timeStamp;
 
-        let transitionTime = timeDown - timeUp;
-        if (lastKey in transition_time) {
-          if (key in transition_time[lastKey]) {
-            transition_time[lastKey][key].push(transitionTime);
+
+        let elapsed = timeDown - timeUp;
+        if (lastKey in transitionTime) {
+          if (key in transitionTime[lastKey]) {
+            transitionTime[lastKey][key].push(elapsed);
           } else { // may be unnecessary
-            transition_time[lastKey][key] = [transitionTime];
+            transitionTime[lastKey][key] = [elapsed];
+          }
         } else {
-          transition_time[lastKey] = {key: [transitionTime]};
+          transitionTime[lastKey] = {key: [elapsed]};
         }
-
-
+        console.log(transitionTime);
         down = true;
       }
     };
