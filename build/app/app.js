@@ -1,5 +1,8 @@
 'use strict';
 
 angular.module('profiler', ['profiler.services']).controller('ProfileController', function ($scope, AJAX) {
-  $scope.prompt = AJAX.getPrompt();
+  AJAX.getPrompt().then(function (data) {
+    $scope.prompt = data.split(' ');
+    $scope.word = 0;
+  });
 });

@@ -1,9 +1,13 @@
-const prompts = require('prompts.js');
+const prompts = require('../prompts.js');
 
 module.exports = (app, express) => {
-  app.get('/api/prompts', () => {
+  app.get('/', (req, res) => {
+    res.render('index');
+  })
+
+
+  app.get('/api/prompts', (req, res) => {
     const rVal = Math.floor(Math.random() * prompts.length);
     res.send(200, prompts[rVal]);
   });
-  app.post('/api/prompts', promptController.newPrompt);
 };

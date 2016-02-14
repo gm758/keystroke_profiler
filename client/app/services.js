@@ -1,4 +1,4 @@
-angular.module('shortly.services', [])
+angular.module('profiler.services', [])
   .factory('AJAX', ($http) => {
     const getPrompt = () => {
       return $http({
@@ -6,6 +6,7 @@ angular.module('shortly.services', [])
         url: '/api/prompts'
       }).then(res => res.data);
     };
+
     return {
       getPrompt,
     };
