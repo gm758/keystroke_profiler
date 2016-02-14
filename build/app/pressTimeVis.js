@@ -26,7 +26,7 @@ const x = d3.scale
 
 const chart = d3.select('#chart')
                 .append('svg') //may be unnecessary
-                .attr('width', width);
+                .attr('width', width)
                 .attr('height', height);
 
 const xAxis = d3.svg.axis()
@@ -45,7 +45,7 @@ function avg(arr) {
 d3.json(createTestData(), (error, data) => {
   let dataEntries = d3.entries(data);
   x.domain(dataEntries.map(d => d.key));
-  y.domain([0, d3.max(dataEntries, d => avg(d.value)]);
+  y.domain([0, d3.max(dataEntries, d => avg(d.value))]);
   let bar = chart.selectAll('g')
                   .data(dataEntries)
                   .enter()
