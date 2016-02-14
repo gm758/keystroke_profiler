@@ -38,7 +38,6 @@ angular.module('profiler', ['profiler.services']).controller('ProfileController'
         transitionTime[lastKey] = {};
         transitionTime[lastKey][key] = [elapsed];
       }
-      console.log(transitionTime);
     }
   };
 
@@ -50,5 +49,17 @@ angular.module('profiler', ['profiler.services']).controller('ProfileController'
     }
     down = false;
     lastKey = key;
+  };
+
+  $scope.submitClick = function () {
+    AJAX.saveProfile(transitionTime).then(function (res) {
+      console.log(res);
+    });
+  };
+
+  $scope.showClick = function () {
+    AJAX.getProfiles().then(function (res) {
+      console.log(res);
+    });
   };
 });

@@ -19,10 +19,13 @@
     <div class="input">
       <textarea type="text" ng-model="textarea" ng-keyup="handleUp($event)" ng-keydown="handleDown($event)"></textarea>
       {{ textarea }}
+      <button ng-click="submitClick()">Submit Profile</button>
+      <button ng-click="showClick()">Show Data</button>
     </div>
+
   </div>
 
-
+  <script src="http://d3js.org/d3.v3.js"></script>
   <script src="bower_components/angular/angular.js"></script>
   <script src="bower_components/angular-route/angular-route.js"></script>
   <script src="app/services.js"></script>
