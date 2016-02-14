@@ -29,7 +29,7 @@ var chart = d3.select('#chart').append('svg') //may be unnecessary
 
 var xAxis = d3.svg.axis().scale(x).orient('bottom');
 
-var yAxis = d3.svg.axis().scale(y).orient('left');
+var yAxis = d3.svg.axis().scale(y).orient('right');
 
 function avg(arr) {
   return arr.reduce(function (a, b) {
@@ -55,6 +55,7 @@ y.domain([0, d3.max(dataEntries, function (d) {
   return d.value;
 })]);
 var bar = chart.selectAll('g').data(dataEntries).enter().append('g');
+
 console.log(x.rangeBand());
 bar.append('rect').attr('y', function (d) {
   return y(d.value);
@@ -65,34 +66,6 @@ bar.append('rect').attr('y', function (d) {
   return height - y(d.value);
 }).attr('width', x.rangeBand());
 
-chart.append('g').attr('class', 'x axis').call(xAxis);
+chart.append('g').attr('class', 'x axis').attr('transform', 'translate(-5, ' + height + ')').call(xAxis);
 
-chart.append('g').attr('class', 'y axis').call(yAxis).append('text').attr('y', 6).attr('dy', '0.71em').style('text-anchor', 'end').text('Average Time');
-
-// d3.json(createTestData(), (error, data) => {
-//   let dataEntries = d3.entries(data);
-//   x.domain(dataEntries.map(d => d.key));
-//   y.domain([0, d3.max(dataEntries, d => avg(d.value))]);
-//   let bar = chart.selectAll('g')
-//                   .data(dataEntries)
-//                   .enter()
-//                   .append('g');
-//   bar.append('rect')
-//       .attr('y', d => y(avg(d.value)))
-//       .attr('x', (d, i) => x.rangeBand()) //todo: add margins
-//       .attr('height', d => height - y(avg(d.value)))
-//       .attr('width', x.rangeBand());
-
-//   chart.append('g')
-//       .attr('class', 'x axis')
-//       .call(xAxis);
-
-//   chart.append('g')
-//         .attr('class', 'y axis')
-//         .call(yAxis)
-//         .append('text')
-//         .attr('y', 6)
-//         .attr('dy', '0.71em')
-//         .style('text-anchor', 'end')
-//         .text('Average Time');
-// });
+chart.append('g').attr('class', 'y axis').attr('transform', 'translate(0,0)').call(yAxis).append('text').attr('y', 6).attr('dy', '0.71em').style('text-anchor', 'end').text('Average Time');

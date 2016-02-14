@@ -2,11 +2,22 @@
  background-color: yellow;
 }
 
-#chart rect {
-  fill: steelblue;
+#chart rect{
+  fill: #4aaeea;
 }
 
-#chart text {
+#chart text{
+  fill: white;
   font: 10px sans-serif;
-  text-anchor:middle;
+  text-anchor: end; 
+}
+
+.axis text{
+  font: 10px sans-serif;
+}
+
+.axis path, .axis line{
+  fill: none;
+  stroke : #fff;
+  shape-rendering: crispEdges;
 }
