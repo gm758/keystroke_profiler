@@ -64,7 +64,7 @@ d3.json(createTestData(), (error, data) => {
         .attr('class', 'y axis')
         .call(yAxis)
         .append('text')
-        .attr('y', 6);
+        .attr('y', 6)
         .attr('dy', '0.71em')
         .style('text-anchor', 'end')
         .text('Average Time');
