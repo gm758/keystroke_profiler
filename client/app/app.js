@@ -56,8 +56,6 @@ angular.module('profiler', [
       lastKeyUp = String.fromCharCode(event.which);
       keyUpStack.push([lastKeyUp, timeUp]);
 
-       
-
       let elapsed = timeUp - keyDownQueue.shift();;
 
       pressTimes[lastKeyUp] ? pressTimes[lastKeyUp].push(timeUp - timeDown) : pressTimes[lastKeyUp] = [timeUp - timeDown];
@@ -86,7 +84,6 @@ angular.module('profiler', [
 
     $scope.showPressClick = () => {
       d3.selectAll('.pressChart').remove();
-
       AJAX.getPressTimes().then((res) => {
         console.log(res[res.length - 1]);
         Graph.generateGraph(res[res.length - 1]); 
