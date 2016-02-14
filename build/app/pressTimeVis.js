@@ -72,8 +72,3 @@ bar.append("rect").attr("y", function (d) {
 chart.append("g").attr("class", "x axis").attr("transform", "translate(" + margin.left + "," + height + ")").call(xAxis);
 
 chart.append("g").attr("class", "y axis").attr("transform", "translate(" + margin.left + ",0)").call(yAxis).append("text").attr("transform", "rotate(-90)").attr("y", 6).attr("dy", ".71em").style("text-anchor", "end").text("Average Press Time");
-
-// function type(d) {
-//     d.letter = +d.letter; // coerce to number
-//     return d;
-//   }

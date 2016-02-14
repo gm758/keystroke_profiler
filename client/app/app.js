@@ -1,7 +1,7 @@
 angular.module('profiler', [
   'profiler.services'
   ])
-  .controller('ProfileController', ($scope, AJAX) => {
+  .controller('ProfileController', ($scope, AJAX, Graph) => {
     AJAX.getPrompt().then((data) => {
       $scope.prompt = data.split(' ');
     });
@@ -70,10 +70,11 @@ angular.module('profiler', [
     };
 
     $scope.showPressClick = () => {
+      d3.selectAll('.pressChart').remove();
+
       AJAX.getPressTimes().then((res) => {
-        console.log('press');
-        console.log(res);
-      })
+        Graph.generateGraph(res[res.length - 1]); 
+      });
     }
 
   });

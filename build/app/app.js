@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('profiler', ['profiler.services']).controller('ProfileController', function ($scope, AJAX) {
+angular.module('profiler', ['profiler.services']).controller('ProfileController', function ($scope, AJAX, Graph) {
   AJAX.getPrompt().then(function (data) {
     $scope.prompt = data.split(' ');
   });
@@ -69,9 +69,10 @@ angular.module('profiler', ['profiler.services']).controller('ProfileController'
   };
 
   $scope.showPressClick = function () {
+    d3.selectAll('.pressChart').remove();
+
     AJAX.getPressTimes().then(function (res) {
-      console.log('press');
-      console.log(res);
+      Graph.generateGraph(res[res.length - 1]);
     });
   };
 });
