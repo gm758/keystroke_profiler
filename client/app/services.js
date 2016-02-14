@@ -7,24 +7,41 @@ angular.module('profiler.services', [])
       }).then(res => res.data);
     };
 
-    const saveProfile = (data) => {
+    const saveTransitions = (data) => {
       return $http({
         method: 'POST',
-        url: '/api/entries',
+        url: '/api/transitions',
         data: data,
       })
-    }
+    };
 
-    const getProfiles = () => {
+    const getTransitions = () => {
       return $http({
         method: 'GET',
-        url: '/api/entries'
+        url: '/api/transitions',
       }).then(res => res.data);
-    }
+    };
+
+    const savePressTimes = (data) => {
+      return $http({
+        method: 'POST',
+        url: '/api/pressTimes',
+        data: data,
+      })
+    };
+
+    const getPressTimes = () => {
+      return $http({
+        method: 'GET',
+        url: '/api/pressTimes',
+      }).then(res => res.data);
+    };
 
     return {
       getPrompt,
-      saveProfile,
-      getProfiles,
+      saveTransitions,
+      getTransitions,
+      savePressTimes,
+      getPressTimes,
     };
   });

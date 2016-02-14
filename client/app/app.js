@@ -53,14 +53,27 @@ angular.module('profiler', [
 
 
     $scope.submitClick = () => {
-      AJAX.saveProfile(transitionTime).then((res) => {
+      AJAX.saveTransitions(transitionTime).then((res) => {
         console.log(res);
       });
+
+      AJAX.savePressTimes(pressTimes).then((res) => {
+        console.log(res);
+      })
+    };
+
+    $scope.showTransClick = () => {
+      AJAX.getTransitions().then((res) => {
+        console.log('trans');
+        console.log(res);
+      });
+    };
+
+    $scope.showPressClick = () => {
+      AJAX.getPressTimes().then((res) => {
+        console.log('press');
+        console.log(res);
+      })
     }
 
-    $scope.showClick = () => {
-      AJAX.getProfiles().then((res) => {
-        console.log(res);
-      });
-    }
   });

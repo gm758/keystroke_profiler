@@ -10,18 +10,35 @@ angular.module('profiler.services', []).factory('AJAX', function ($http) {
     });
   };
 
-  var saveProfile = function saveProfile(data) {
+  var saveTransitions = function saveTransitions(data) {
     return $http({
       method: 'POST',
-      url: '/api/entries',
+      url: '/api/transitions',
       data: data
     });
   };
 
-  var getProfiles = function getProfiles() {
+  var getTransitions = function getTransitions() {
     return $http({
       method: 'GET',
-      url: '/api/entries'
+      url: '/api/transitions'
+    }).then(function (res) {
+      return res.data;
+    });
+  };
+
+  var savePressTimes = function savePressTimes(data) {
+    return $http({
+      method: 'POST',
+      url: '/api/pressTimes',
+      data: data
+    });
+  };
+
+  var getPressTimes = function getPressTimes() {
+    return $http({
+      method: 'GET',
+      url: '/api/pressTimes'
     }).then(function (res) {
       return res.data;
     });
@@ -29,7 +46,9 @@ angular.module('profiler.services', []).factory('AJAX', function ($http) {
 
   return {
     getPrompt: getPrompt,
-    saveProfile: saveProfile,
-    getProfiles: getProfiles
+    saveTransitions: saveTransitions,
+    getTransitions: getTransitions,
+    savePressTimes: savePressTimes,
+    getPressTimes: getPressTimes
   };
 });

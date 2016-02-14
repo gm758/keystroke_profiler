@@ -1,5 +1,6 @@
 let prompts = require('../prompts.js');
-let entries = require('../entries.js');
+let transitions = require('../transitions.js');
+let pressTimes = require('../pressTimes.js');
 
 module.exports = (app, express) => {
   app.get('/', (req, res) => {
@@ -11,15 +12,26 @@ module.exports = (app, express) => {
     res.send(200, prompts[rVal]);
   });
 
-  app.get('/api/entries', (req, res) => {
-    console.log(entries);
-    res.send(200, JSON.stringify(entries));
+  app.get('/api/transitions', (req, res) => {
+    console.log(transitions);
+    res.send(200, JSON.stringify(transitions));
   })
 
   //TODO: flesh out
-  app.post('/api/entries', (req, res) => {
+  app.post('/api/transitions', (req, res) => {
     const data = req.body;
-    entries.push(data);
+    transitions.push(data);
+    res.send(200);
+  });
+
+  app.get('/api/pressTimes', (req, res) => {
+    console.log(pressTimes)
+    res.send(200, JSON.stringify(pressTimes));
+  })
+
+  app.post('/api/pressTimes', (req, res) => {
+    const data = req.body;
+    transitions.push(data);
     res.send(200);
   });
 };
