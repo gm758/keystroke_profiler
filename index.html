@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html ng-app="keystrokeProfiler">
+<html ng-app="profiler">
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -10,22 +10,22 @@
   </head>
   <body>
     <!-- the ng-view directive is where our templates will be loaded into when naviagted to -->
-  <div ng-controller="ProfileController">
+  <div class="container" ng-controller="ProfileController">
+    <h1>Keystroke Profiler</h1>
     <div class="prompt">
+      {{ prompt }}
       Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus eu metus laoreet, tincidunt nisl quis, tristique ipsum. Maecenas euismod nisi in est commodo, eget congue diam fermentum. Duis id est luctus libero sodales tempus. Aliquam tempor posuere nulla quis mattis. Vivamus in leo vitae felis porta dapibus. Quisque egestas accumsan est, non volutpat neque tincidunt eu. Donec metus augue, congue nec orci eget, iaculis gravida nisi. Phasellus hendrerit tortor ut neque lobortis, egestas ultrices sapien pretium. Integer sed mi sed felis lacinia elementum. Nam augue ligula, venenatis sit amet mi sed, convallis consectetur odio. Vivamus lobortis maximus leo ac ornare. Nunc vel lectus interdum, fermentum ligula sit amet, accumsan quam. Vivamus aliquet pretium metus id convallis.
     </div>
-    <textarea type="text" ng-model="textarea"></textarea>
+    <div class="input">
+      <textarea type="text" ng-model="textarea"></textarea>
+      {{ textarea }}
+    </div>
   </div>
 
 
   <script src="bower_components/angular/angular.js"></script>
   <script src="bower_components/angular-route/angular-route.js"></script>
-  <script src="app/auth/auth.js"></script>
-  <script src="app/links/links.js"></script>
-  <script src="app/shorten/shorten.js"></script>
-  <script src="app/services/services.js"></script>
-  <script src="app/app.js"></script>
-
+  <script src="client/app/app.js"></script>
 
   </body>
 </html>

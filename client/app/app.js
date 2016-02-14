@@ -1,4 +1,4 @@
-angular.module('keyboardProfiler', [])
-  .controller('ProfileController', function($scope) {
-    
+angular.module('profiler', ['profiler.services'])
+  .controller('ProfileController', ($scope, AJAX) => {
+    $scope.prompt = 
   });
