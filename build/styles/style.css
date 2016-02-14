@@ -2,12 +2,11 @@
  background-color: yellow;
 }
 
-.chart rect {
+#chart rect {
   fill: steelblue;
 }
 
-.chart text {
-  fill: white;
+#chart text {
   font: 10px sans-serif;
   text-anchor:middle;
 }

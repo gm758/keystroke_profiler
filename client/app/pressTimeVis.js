@@ -63,6 +63,7 @@ let bar = chart.selectAll('g')
                 .data(dataEntries)
                 .enter()
                 .append('g');
+                
 console.log(x.rangeBand());
 bar.append('rect')
     .attr('y', d => y(d.value))
