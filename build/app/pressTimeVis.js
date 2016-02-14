@@ -4,10 +4,11 @@ function createTestData() {
   let i = 0;
   while (i < 10) {
     alph.reduce((a,b) => {
-      return a[b] ? a[b].push(Math.random()) : a[b] = [Math.random]
+      return a[b] ? a[b].push(Math.random()) : a[b] = [Math.random()];
     }, obj);    
     i++;
   };
+  console.log(JSON.stringify(obj));
   return JSON.stringify(obj);
 }
 
