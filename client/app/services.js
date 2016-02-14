@@ -98,6 +98,7 @@ angular.module('profiler.services', [])
                     .scale(y)
                     .orient("left");
 
+      console.log(dataEntries.map(d => d.key));
       x.domain(dataEntries.map(d => d.key));
       y.domain([0, d3.max(dataEntries, d => d.value)]);
 
