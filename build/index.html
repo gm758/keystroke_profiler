@@ -17,7 +17,7 @@
       <span ng-class="{'selected': selected.id == $index}" ng-repeat="word in prompt track by $index">{{ word }} </span>
     </div>
     <div class="input">
-      <textarea type="text" ng-model="textarea" ng-keypress="press($event)"></textarea>
+      <textarea type="text" ng-model="textarea" ng-keyup="handleUp($event)" ng-keydown="handleDown($event)"></textarea>
       {{ textarea }}
     </div>
   </div>
