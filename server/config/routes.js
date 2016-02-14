@@ -31,7 +31,7 @@ module.exports = (app, express) => {
 
   app.post('/api/pressTimes', (req, res) => {
     const data = req.body;
-    transitions.push(data);
+    pressTimes.push(data);
     res.send(200);
   });
 };
