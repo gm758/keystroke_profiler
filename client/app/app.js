@@ -1,4 +1,7 @@
-angular.module('profiler', ['profiler.services'])
+angular.module('profiler', [
+  'profiler.services'
+  ])
   .controller('ProfileController', ($scope, AJAX) => {
-    $scope.prompt = 
+    $scope.prompt = AJAX.getPrompt();
+
   });

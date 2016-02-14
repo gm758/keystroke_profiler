@@ -6,6 +6,7 @@ angular.module('shortly.services', [])
         url: '/api/prompts'
       }).then(res => res.data);
     };
-
-
-  })
+    return {
+      getPrompt,
+    };
+  });
