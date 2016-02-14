@@ -10,49 +10,65 @@ angular.module('profiler', [
 
     let pressTimes = {};
     let transitionTime = {};
-    let lastKey = '';
-    let key = '';
+
+    // going on assumption that keys are released in the orde they are pressed
+    // should add more robust solution in the future
+    let keyDownQueue = [];
+    let keyUpStack = [];
+    let down = false;
+
     let timeDown;
     let timeUp;
-    let down = false;
+
+    let lastKeyUp;
+    let curKeyDown;
 
     // TODO: consider/test for edge cases
     $scope.handleDown = (event) => {
       if (!down) {
-        key = String.fromCharCode(event.which);
-        timeDown = event.timeStamp;
         down = true;
+        timeDown = event.timeStamp;
+        curKeyDown = String.fromCharCode(event.which);
 
-        if (lastKey === '') {
+        keyDownQueue.push(timeDown);
+
+        if (!keyUpStack.length) {
           return;
         }
-
-        let elapsed = timeDown - timeUp;
-        if (lastKey in transitionTime) {
-          if (key in transitionTime[lastKey]) {
-            transitionTime[lastKey][key].push(elapsed);
+        const lastKeyUpTuple = keyUpStack.pop();
+        const elapsed = timeDown - lastKeyUpTuple[1];
+        if (lastKeyUpTuple[0] in transitionTime) {
+          if (curKeyDown in transitionTime[lastKeyUpTuple[0]]) {
+            transitionTime[lastKeyUpTuple[0]][curKeyDown].push(elapsed);
           } else { // may be unnecessary
-            transitionTime[lastKey][key] = [elapsed];
+            transitionTime[lastKeyUpTuple[0]][curKeyDown] = [elapsed];
           }
         } else {
-          transitionTime[lastKey] = {};
-          transitionTime[lastKey][key] = [elapsed];
+          transitionTime[lastKeyUpTuple[0]] = {};
+          transitionTime[lastKeyUpTuple[0]][curKeyDown] = [elapsed];
         }
       }
     };
 
     $scope.handleUp = (event) => {
+      down = false;
       timeUp = event.timeStamp
-      pressTimes[key] ? pressTimes[key].push(timeUp - timeDown) : pressTimes[key] = [timeUp - timeDown];
-      if (key === ' ') {
+      lastKeyUp = String.fromCharCode(event.which);
+      keyUpStack.push([lastKeyUp, timeUp]);
+
+       
+
+      let elapsed = timeUp - keyDownQueue.shift();;
+
+      pressTimes[lastKeyUp] ? pressTimes[lastKeyUp].push(timeUp - timeDown) : pressTimes[lastKeyUp] = [timeUp - timeDown];
+      if (lastKeyUp === ' ') {
         $scope.selected.id++;
       }
-      down = false;
-      lastKey = key;
     };
 
 
     $scope.submitClick = () => {
+      console.log(pressTimes);
       AJAX.saveTransitions(transitionTime).then((res) => {
         console.log(res);
       });
@@ -64,7 +80,6 @@ angular.module('profiler', [
 
     $scope.showTransClick = () => {
       AJAX.getTransitions().then((res) => {
-        console.log('trans');
         console.log(res);
       });
     };
@@ -73,6 +88,7 @@ angular.module('profiler', [
       d3.selectAll('.pressChart').remove();
 
       AJAX.getPressTimes().then((res) => {
+        console.log(res[res.length - 1]);
         Graph.generateGraph(res[res.length - 1]); 
       });
     }

@@ -72,7 +72,6 @@ angular.module('profiler.services', [])
         };
         return obj;
       }
-
       data = data || createTestData();
       let dataEntries = processPressTimes(data);
 

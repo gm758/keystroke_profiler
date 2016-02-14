@@ -82,7 +82,6 @@ angular.module('profiler.services', []).factory('AJAX', function ($http) {
       };
       return obj;
     }
-
     data = data || createTestData();
     var dataEntries = processPressTimes(data);
 
