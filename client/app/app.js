@@ -21,7 +21,11 @@ angular.module('profiler', [
       if (!down) {
         key = String.fromCharCode(event.which);
         timeDown = event.timeStamp;
+        down = true;
 
+        if (lastKey === '') {
+          return;
+        }
 
         let elapsed = timeDown - timeUp;
         if (lastKey in transitionTime) {
@@ -34,7 +38,6 @@ angular.module('profiler', [
           transitionTime[lastKey] = {key: [elapsed]};
         }
         console.log(transitionTime);
-        down = true;
       }
     };
 

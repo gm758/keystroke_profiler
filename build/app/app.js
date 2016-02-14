@@ -20,6 +20,11 @@ angular.module('profiler', ['profiler.services']).controller('ProfileController'
     if (!down) {
       key = String.fromCharCode(event.which);
       timeDown = event.timeStamp;
+      down = true;
+
+      if (lastKey === '') {
+        return;
+      }
 
       var elapsed = timeDown - timeUp;
       if (lastKey in transitionTime) {
@@ -33,7 +38,6 @@ angular.module('profiler', ['profiler.services']).controller('ProfileController'
         transitionTime[lastKey] = { key: [elapsed] };
       }
       console.log(transitionTime);
-      down = true;
     }
   };
 
