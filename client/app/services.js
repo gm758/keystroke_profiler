@@ -133,10 +133,16 @@ angular.module('profiler.services', [])
             .attr("dy", ".71em")
             .style("text-anchor", "end")
             .text("Average Press Time");    
+    },
+
+    const generateTransitionGraph = () => {
+
     }
+
 
     return {
       generateGraph,
+      generateTranstionGraph,
     }
   })
 
