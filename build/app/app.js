@@ -23,11 +23,12 @@ angular.module('profiler', ['profiler.services']).controller('ProfileController'
   var curKeyDown = undefined;
 
   // TODO: consider/test for edge cases
+  // Review this section of the code, ensuring all logic is sound
   $scope.handleDown = function (event) {
     if (!down) {
       down = true;
       timeDown = event.timeStamp;
-      curKeyDown = String.fromCharCode(event.which);
+      curKeyDown = keyboardMap[event.which];
 
       keyDownQueue.push(timeDown);
 
@@ -53,7 +54,7 @@ angular.module('profiler', ['profiler.services']).controller('ProfileController'
   $scope.handleUp = function (event) {
     down = false;
     timeUp = event.timeStamp;
-    lastKeyUp = String.fromCharCode(event.which);
+    lastKeyUp = keyboardMap[event.which];
     keyUpStack.push([lastKeyUp, timeUp]);
 
     var elapsed = timeUp - keyDownQueue.shift();;

@@ -46,7 +46,8 @@ angular.module('profiler.services', [])
     };
   })
   .factory('Graph', () => {    
-    const generateGraph = (data) => {
+    const generatePressGraph = (data) => {
+
       function avg(arr) {
         return arr.reduce((a,b) => +a + +b) / arr.length;
       }

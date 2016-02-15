@@ -24,11 +24,12 @@ angular.module('profiler', [
     let curKeyDown;
 
     // TODO: consider/test for edge cases
+    // Review this section of the code, ensuring all logic is sound
     $scope.handleDown = (event) => {
       if (!down) {
         down = true;
         timeDown = event.timeStamp;
-        curKeyDown = String.fromCharCode(event.which);
+        curKeyDown = keyboardMap[event.which];
 
         keyDownQueue.push(timeDown);
 
@@ -37,6 +38,7 @@ angular.module('profiler', [
         }
         const lastKeyUpTuple = keyUpStack.pop();
         const elapsed = timeDown - lastKeyUpTuple[1];
+
         if (lastKeyUpTuple[0] in transitionTime) {
           if (curKeyDown in transitionTime[lastKeyUpTuple[0]]) {
             transitionTime[lastKeyUpTuple[0]][curKeyDown].push(elapsed);
@@ -53,7 +55,7 @@ angular.module('profiler', [
     $scope.handleUp = (event) => {
       down = false;
       timeUp = event.timeStamp
-      lastKeyUp = String.fromCharCode(event.which);
+      lastKeyUp = keyboardMap[event.which];
       keyUpStack.push([lastKeyUp, timeUp]);
 
       let elapsed = timeUp - keyDownQueue.shift();;
@@ -66,7 +68,6 @@ angular.module('profiler', [
 
 
     $scope.submitClick = () => {
-      console.log(pressTimes);
       AJAX.saveTransitions(transitionTime).then((res) => {
         console.log(res);
       });
@@ -85,8 +86,7 @@ angular.module('profiler', [
     $scope.showPressClick = () => {
       d3.selectAll('.pressChart').remove();
       AJAX.getPressTimes().then((res) => {
-        console.log(res[res.length - 1]);
-        Graph.generateGraph(res[res.length - 1]); 
+        Graph.generatePressGraph(res[res.length - 1]); 
       });
     }
 
