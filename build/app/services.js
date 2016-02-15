@@ -52,7 +52,8 @@ angular.module('profiler.services', []).factory('AJAX', function ($http) {
     getPressTimes: getPressTimes
   };
 }).factory('Graph', function () {
-  var generateGraph = function generateGraph(data) {
+  var generatePressGraph = function generatePressGraph(data) {
+
     function avg(arr) {
       return arr.reduce(function (a, b) {
         return +a + +b;

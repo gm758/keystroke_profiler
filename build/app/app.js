@@ -37,6 +37,7 @@ angular.module('profiler', ['profiler.services']).controller('ProfileController'
       }
       var lastKeyUpTuple = keyUpStack.pop();
       var elapsed = timeDown - lastKeyUpTuple[1];
+
       if (lastKeyUpTuple[0] in transitionTime) {
         if (curKeyDown in transitionTime[lastKeyUpTuple[0]]) {
           transitionTime[lastKeyUpTuple[0]][curKeyDown].push(elapsed);
@@ -66,7 +67,6 @@ angular.module('profiler', ['profiler.services']).controller('ProfileController'
   };
 
   $scope.submitClick = function () {
-    console.log(pressTimes);
     AJAX.saveTransitions(transitionTime).then(function (res) {
       console.log(res);
     });
@@ -85,8 +85,7 @@ angular.module('profiler', ['profiler.services']).controller('ProfileController'
   $scope.showPressClick = function () {
     d3.selectAll('.pressChart').remove();
     AJAX.getPressTimes().then(function (res) {
-      console.log(res[res.length - 1]);
-      Graph.generateGraph(res[res.length - 1]);
+      Graph.generatePressGraph(res[res.length - 1]);
     });
   };
 });
