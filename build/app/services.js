@@ -58,12 +58,12 @@ angular.module('profiler.services', []).factory('AJAX', function ($http) {
       return arr.reduce(function (a, b) {
         return +a + +b;
       }) / arr.length;
-    }
+    } //Dry relative to fn below
 
     function processPressTimes(obj) {
       var results = [];
       _.each(obj, function (value, key) {
-        results.push({ key: key, value: avg(value) * 100 });
+        results.push({ key: key, value: avg(value) });
       });
       return results;
     }
@@ -135,7 +135,44 @@ angular.module('profiler.services', []).factory('AJAX', function ($http) {
     chart.append("g").attr("class", "y axis").attr("transform", "translate(" + margin.left + ",0)").call(yAxis).append("text").attr("transform", "rotate(-90)").attr("y", 6).attr("dy", ".71em").style("text-anchor", "end").text("Average Press Time");
   };
 
+  var generateTransitionGraph = function generateTransitionGraph(data) {
+    //create test data generating fn
+
+    function avg(arr) {
+      return arr.reduce(function (a, b) {
+        return +a + +b;
+      }) / arr.length;
+    }
+
+    function proccessTransitions(obj) {
+      //clean up this code
+      var result = [];
+      _.each(obj, function (value, keyFrom) {
+        _.each(value, function (value, keyTo) {
+          result.push({ keyFrom: keyFrom, keyTo: keyTo, value: avg(value) });
+        });
+      });
+      return result;
+    }
+
+    var transitionData = proccessTransitions(data);
+
+    var margin = { top: 50, right: 0, bottom: 100, left: 30 };
+    var width = 960 - margin.left - margin.right;
+    var height = 960 - margin.top - margin.bottom;
+    var gridSize = Math.floor(width / 26);
+    var legendElementWidth = gridSize * 2;
+    var buckets = 9; //number of color buckets. TODO: increase, update color scheme
+    var colors = ["#ffffd9", "#edf8b1", "#c7e9b4", "#7fcdbb", "#41b6c4", "#1d91c0", "#225ea8", "#253494", "#081d58"];
+    var characters = _.range(48, 91).map(function (charCode) {
+      return String.fromCharCode(charCode);
+    });
+
+    var svg = d3.select('#transitionChart');
+  };
+
   return {
-    generateGraph: generateGraph
+    generatePressGraph: generatePressGraph,
+    generateTransitionGraph: generateTransitionGraph
   };
 });

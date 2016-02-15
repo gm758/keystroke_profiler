@@ -50,12 +50,12 @@ angular.module('profiler.services', [])
 
       function avg(arr) {
         return arr.reduce((a,b) => +a + +b) / arr.length;
-      }
+      } //Dry relative to fn below
 
       function processPressTimes(obj) {
         const results = [];
         _.each(obj, (value, key) => {
-          results.push({key, value: avg(value)*100});
+          results.push({key, value: avg(value)});
         });
         return results;
       }
@@ -133,16 +133,46 @@ angular.module('profiler.services', [])
             .attr("dy", ".71em")
             .style("text-anchor", "end")
             .text("Average Press Time");    
-    },
+    };
 
-    const generateTransitionGraph = () => {
+    const generateTransitionGraph = (data) => {
+      //create test data generating fn 
+
+      function avg(arr) {
+        return arr.reduce((a,b) => +a + +b) / arr.length;
+      }
+
+      function proccessTransitions(obj) {
+        //clean up this code
+        var result = [];
+        _.each(obj, (value, keyFrom) => {
+          _.each(value, (value, keyTo) => {
+            result.push({keyFrom, keyTo, value: avg(value)})
+          });
+        });
+        return result;
+      }
+
+      let transitionData = proccessTransitions(data);
+
+      const margin = {top: 50, right: 0, bottom: 100, left: 30};
+      const width = 960 - margin.left - margin.right;
+      const height = 960 - margin.top - margin.bottom;
+      const gridSize = Math.floor(width / 26);
+      const legendElementWidth = gridSize*2;
+      const buckets = 9; //number of color buckets. TODO: increase, update color scheme
+      const colors = ["#ffffd9","#edf8b1","#c7e9b4","#7fcdbb","#41b6c4","#1d91c0","#225ea8","#253494","#081d58"];
+      const characters = _.range(48, 91).map(charCode => String.fromCharCode(charCode));
+
+      const svg = d3.select('#transitionChart')
+
 
     }
 
 
     return {
-      generateGraph,
-      generateTranstionGraph,
+      generatePressGraph,
+      generateTransitionGraph,
     }
   })
 
