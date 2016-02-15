@@ -154,10 +154,10 @@ angular.module('profiler.services', [])
       }
 
       let transitionData = proccessTransitions(data);
-
+      console.log(transitionData);
       const margin = {top: 50, right: 0, bottom: 100, left: 30};
-      const width = 960 - margin.left - margin.right;
-      const height = 960 - margin.top - margin.bottom;
+      const width = 600 - margin.left - margin.right;
+      const height = 600 - margin.top - margin.bottom;
       const gridSize = Math.floor(width / 26);
       const legendElementWidth = gridSize*2;
       const buckets = 9; //number of color buckets. TODO: increase, update color scheme
@@ -171,7 +171,7 @@ angular.module('profiler.services', [])
                     .append('g')
                     .attr('transform', `translate(${margin.left}, ${margin.top})`);
 
-      const labels = svg.selectAll('.label')
+      const ylabels = svg.selectAll('.ylabel')
                         .data(characters)
                         .enter()
                         .append('text')
@@ -181,19 +181,30 @@ angular.module('profiler.services', [])
                         .style('text-anchor', 'end')
                         .attr('transform', `translate(-6, ${gridSize / 1.5})`);
 
+      const xlabels = svg.selectAll('.xlabel')
+                        .data(characters)
+                        .enter()
+                        .append('text')
+                        .text(d => d)
+                        .attr('x', (d, i) => i * gridSize)
+                        .attr('y', 0)
+                        .style('text-anchor', 'end')
+                        .attr('transform', `translate(${gridSize / 2}, -6)`);
+
       const colorScale = d3.scale
-                            .quantile();
+                            .quantile()
                             .domain([0, buckets-1, d3.max(transitionData, d => d.value)])
                             .range(colors);
 
       const transitions = svg.selectAll('.transition')
-                              .data(transitionData, d => d.fromKey + ':' + d.toKey);
+                              .data(transitionData, d => d.keyFrom + ':' + d.keyTo);
 
-      transitions.append('title')
-                  .enter()
+      transitions.append('title');
+
+      transitions.enter()
                   .append('rect')
-                  .attr('x', d => ((d.fromKey.toUpperCase().charCodeAt(0) - 65) * gridSize))
-                  .attr('y', d => ((d.toKey.toUpperCase().charCodeAt(0) - 65) * gridSize))
+                  .attr('x', d => ((d.keyFrom.toUpperCase().charCodeAt(0) - 65) * gridSize))
+                  .attr('y', d => ((d.keyTo.toUpperCase().charCodeAt(0) - 65) * gridSize))
                   .attr('rx', 4)
                   .attr('ry', 4)
                   .attr('width', gridSize)
@@ -216,7 +227,7 @@ angular.module('profiler.services', [])
             .attr('y', height)
             .attr('width', legendElementWidth)
             .attr('height', gridSize / 2)
-            style('fill', (d, i) => colors[i]);
+            .style('fill', (d, i) => colors[i]);
 
       legend.append('text')
             .text(d => `≥  ${Math.round(d)}`)

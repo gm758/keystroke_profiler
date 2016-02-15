@@ -156,10 +156,10 @@ angular.module('profiler.services', []).factory('AJAX', function ($http) {
     }
 
     var transitionData = proccessTransitions(data);
-
+    console.log(transitionData);
     var margin = { top: 50, right: 0, bottom: 100, left: 30 };
-    var width = 960 - margin.left - margin.right;
-    var height = 960 - margin.top - margin.bottom;
+    var width = 600 - margin.left - margin.right;
+    var height = 600 - margin.top - margin.bottom;
     var gridSize = Math.floor(width / 26);
     var legendElementWidth = gridSize * 2;
     var buckets = 9; //number of color buckets. TODO: increase, update color scheme
@@ -168,7 +168,63 @@ angular.module('profiler.services', []).factory('AJAX', function ($http) {
       return String.fromCharCode(charCode);
     });
 
-    var svg = d3.select('#transitionChart');
+    var svg = d3.select('#transitionChart').append('svg').attr('width', width + margin.left + margin.right).attr('height', height + margin.top + margin.bottom).append('g').attr('transform', 'translate(' + margin.left + ', ' + margin.top + ')');
+
+    var ylabels = svg.selectAll('.ylabel').data(characters).enter().append('text').text(function (d) {
+      return d;
+    }).attr('x', 0).attr('y', function (d, i) {
+      return i * gridSize;
+    }).style('text-anchor', 'end').attr('transform', 'translate(-6, ' + gridSize / 1.5 + ')');
+
+    var xlabels = svg.selectAll('.xlabel').data(characters).enter().append('text').text(function (d) {
+      return d;
+    }).attr('x', function (d, i) {
+      return i * gridSize;
+    }).attr('y', 0).style('text-anchor', 'end').attr('transform', 'translate(' + gridSize / 2 + ', -6)');
+
+    var colorScale = d3.scale.quantile().domain([0, buckets - 1, d3.max(transitionData, function (d) {
+      return d.value;
+    })]).range(colors);
+
+    var transitions = svg.selectAll('.transition').data(transitionData, function (d) {
+      return d.keyFrom + ':' + d.keyTo;
+    });
+
+    transitions.append('title');
+
+    transitions.enter().append('rect').attr('x', function (d) {
+      return (d.keyFrom.toUpperCase().charCodeAt(0) - 65) * gridSize;
+    }).attr('y', function (d) {
+      return (d.keyTo.toUpperCase().charCodeAt(0) - 65) * gridSize;
+    }).attr('rx', 4).attr('ry', 4).attr('width', gridSize).attr('height', gridSize).style('fill', colors[0]);
+
+    transitions.transition().duration(1000).style('fill', function (d) {
+      return colorScale(d.value);
+    });
+
+    transitions.select('title').text(function (d) {
+      return d.value;
+    });
+
+    var legend = svg.selectAll('.legend').data([0].concat(colorScale.quantiles()), function (d) {
+      return d;
+    });
+
+    legend.enter().append('g').attr('class', 'legend');
+
+    legend.append('rect').attr('x', function (d, i) {
+      return legendElementWidth * i;
+    }).attr('y', height).attr('width', legendElementWidth).attr('height', gridSize / 2).style('fill', function (d, i) {
+      return colors[i];
+    });
+
+    legend.append('text').text(function (d) {
+      return '≥  ' + Math.round(d);
+    }).attr('x', function (d, i) {
+      return legendElementWidth * i;
+    }).attr('y', height + gridSize);
+
+    legend.exit().remove();
   };
 
   return {
