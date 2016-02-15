@@ -61,9 +61,7 @@ angular.module('profiler', ['profiler.services']).controller('ProfileController'
     var elapsed = timeUp - keyDownQueue.shift();;
 
     pressTimes[lastKeyUp] ? pressTimes[lastKeyUp].push(elapsed) : pressTimes[lastKeyUp] = [elapsed];
-    console.log(lastKeyUp);
-    if (lastKeyUp === 'space') {
-      console.log('space registered');
+    if (lastKeyUp === 'SPACE') {
       $scope.selected.id++;
     }
     //todo: handle backspaces
@@ -80,6 +78,7 @@ angular.module('profiler', ['profiler.services']).controller('ProfileController'
   };
 
   $scope.showTransClick = function () {
+    d3.selectAll('.transitionChart').remove();
     AJAX.getTransitions().then(function (res) {
       Graph.generateTransitionGraph(res[res.length - 1]);
     });

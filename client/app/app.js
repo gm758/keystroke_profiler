@@ -61,7 +61,6 @@ angular.module('profiler', [
       let elapsed = timeUp - keyDownQueue.shift();;
 
       pressTimes[lastKeyUp] ? pressTimes[lastKeyUp].push(elapsed) : pressTimes[lastKeyUp] = [elapsed];
-      console.log(lastKeyUp);
       if (lastKeyUp === 'SPACE') {
         $scope.selected.id++;
       }
@@ -81,6 +80,7 @@ angular.module('profiler', [
     };
 
     $scope.showTransClick = () => {
+      d3.selectAll('.transitionChart').remove();
       AJAX.getTransitions().then((res) => {
         Graph.generateTransitionGraph(res[res.length - 1]);
       });

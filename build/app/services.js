@@ -168,7 +168,7 @@ angular.module('profiler.services', []).factory('AJAX', function ($http) {
       return String.fromCharCode(charCode);
     });
 
-    var svg = d3.select('#transitionChart').append('svg').attr('width', width + margin.left + margin.right).attr('height', height + margin.top + margin.bottom).append('g').attr('transform', 'translate(' + margin.left + ', ' + margin.top + ')');
+    var svg = d3.select('#transitionChart').append('svg').classed('transitionChart', true).attr('width', width + margin.left + margin.right).attr('height', height + margin.top + margin.bottom).append('g').attr('transform', 'translate(' + margin.left + ', ' + margin.top + ')');
 
     var ylabels = svg.selectAll('.ylabel').data(characters).enter().append('text').text(function (d) {
       return d;

@@ -166,6 +166,7 @@ angular.module('profiler.services', [])
 
       const svg = d3.select('#transitionChart')
                     .append('svg')
+                    .classed('transitionChart', true)
                     .attr('width', width + margin.left + margin.right)
                     .attr('height', height + margin.top + margin.bottom)
                     .append('g')
