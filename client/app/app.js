@@ -60,10 +60,13 @@ angular.module('profiler', [
 
       let elapsed = timeUp - keyDownQueue.shift();;
 
-      pressTimes[lastKeyUp] ? pressTimes[lastKeyUp].push(timeUp - timeDown) : pressTimes[lastKeyUp] = [timeUp - timeDown];
-      if (lastKeyUp === ' ') {
+      pressTimes[lastKeyUp] ? pressTimes[lastKeyUp].push(elapsed) : pressTimes[lastKeyUp] = [elapsed];
+      console.log(lastKeyUp);
+      if (lastKeyUp === 'SPACE') {
         $scope.selected.id++;
       }
+      //todo: handle backspaces
+
     };
 
 
@@ -79,7 +82,7 @@ angular.module('profiler', [
 
     $scope.showTransClick = () => {
       AJAX.getTransitions().then((res) => {
-        console.log(res);
+        Graph.generateTransitionGraph(res[res.length - 1]);
       });
     };
 
