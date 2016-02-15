@@ -165,8 +165,65 @@ angular.module('profiler.services', [])
       const characters = _.range(48, 91).map(charCode => String.fromCharCode(charCode));
 
       const svg = d3.select('#transitionChart')
+                    .append('svg')
+                    .attr('width', width + margin.left + margin.right)
+                    .attr('height', height + margin.top + margin.bottom)
+                    .append('g')
+                    .attr('transform', `translate(${margin.left}, ${margin.top})`);
 
+      const labels = svg.selectAll('.label')
+                        .data(characters)
+                        .enter()
+                        .append('text')
+                        .text(d => d)
+                        .attr('x', 0)
+                        .attr('y', (d, i) => i * gridSize)
+                        .style('text-anchor', 'end')
+                        .attr('transform', `translate(-6, ${gridSize / 1.5})`);
 
+      const colorScale = d3.scale
+                            .quantile();
+                            .domain([0, buckets-1, d3.max(transitionData, d => d.value)])
+                            .range(colors);
+
+      const transitions = svg.selectAll('.transition')
+                              .data(transitionData, d => d.fromKey + ':' + d.toKey);
+
+      transitions.append('title')
+                  .enter()
+                  .append('rect')
+                  .attr('x', d => ((d.fromKey.toUpperCase().charCodeAt(0) - 65) * gridSize))
+                  .attr('y', d => ((d.toKey.toUpperCase().charCodeAt(0) - 65) * gridSize))
+                  .attr('rx', 4)
+                  .attr('ry', 4)
+                  .attr('width', gridSize)
+                  .attr('height', gridSize)
+                  .style('fill', colors[0]);
+
+      transitions.transition().duration(1000)
+                  .style('fill', d => colorScale(d.value));
+
+      transitions.select('title').text(d => d.value);
+
+      const legend = svg.selectAll('.legend')
+                        .data([0].concat(colorScale.quantiles()), d => d);
+
+      legend.enter().append('g')
+            .attr('class', 'legend');
+
+      legend.append('rect')
+            .attr('x', (d,i) => legendElementWidth * i)
+            .attr('y', height)
+            .attr('width', legendElementWidth)
+            .attr('height', gridSize / 2)
+            style('fill', (d, i) => colors[i]);
+
+      legend.append('text')
+            .text(d => `≥  ${Math.round(d)}`)
+            .attr('x', (d, i) => legendElementWidth * i)
+            .attr('y', height + gridSize);
+
+      legend.exit().remove();
     }
 
 
