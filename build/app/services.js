@@ -91,8 +91,8 @@ angular.module('profiler.services', []).factory('AJAX', function ($http) {
     });
 
     var margin = { top: 20, right: 30, bottom: 30, left: 40 },
-        width = 960 - margin.left - margin.right,
-        height = 500 - margin.top - margin.bottom;
+        width = 500 - margin.left - margin.right,
+        height = 250 - margin.top - margin.bottom;
 
     // scale to ordinal because x axis is not numerical
     var x = d3.scale.ordinal().rangeRoundBands([0, width], .1);
@@ -108,13 +108,12 @@ angular.module('profiler.services', []).factory('AJAX', function ($http) {
 
     var yAxis = d3.svg.axis().scale(y).orient("left");
 
-    console.log('data', dataEntries.map(function (d) {
-      return d.key;
-    }));
     x.domain(dataEntries.map(function (d) {
       return d.key;
     }));
-    y.domain([0, d3.max(dataEntries, function (d) {
+    y.domain([d3.min(dataEntries, function (d) {
+      return d.value;
+    }), d3.max(dataEntries, function (d) {
       return d.value;
     })]);
 
@@ -156,15 +155,14 @@ angular.module('profiler.services', []).factory('AJAX', function ($http) {
     }
 
     var transitionData = proccessTransitions(data);
-    console.log(transitionData);
     var margin = { top: 50, right: 0, bottom: 100, left: 30 };
     var width = 600 - margin.left - margin.right;
-    var height = 600 - margin.top - margin.bottom;
-    var gridSize = Math.floor(width / 26);
-    var legendElementWidth = gridSize * 2;
+    var height = 500 - margin.top - margin.bottom;
+    var gridSize = Math.floor(height / 26);
+    var legendElementHeight = gridSize * 2;
     var buckets = 9; //number of color buckets. TODO: increase, update color scheme
     var colors = ["#ffffd9", "#edf8b1", "#c7e9b4", "#7fcdbb", "#41b6c4", "#1d91c0", "#225ea8", "#253494", "#081d58"];
-    var characters = _.range(48, 91).map(function (charCode) {
+    var characters = _.range(65, 91).map(function (charCode) {
       return String.fromCharCode(charCode);
     });
 
@@ -211,20 +209,19 @@ angular.module('profiler.services', []).factory('AJAX', function ($http) {
     });
 
     legend.enter().append('g').attr('class', 'legend');
-
-    legend.append('rect').attr('x', function (d, i) {
-      return legendElementWidth * i;
-    }).attr('y', height).attr('width', legendElementWidth).attr('height', gridSize / 2).style('fill', function (d, i) {
+    legend.append('rect').attr('x', width - gridSize * 5).attr('y', function (d, i) {
+      return legendElementHeight * i;
+    }).attr('width', gridSize / 2).attr('height', legendElementHeight).style('fill', function (d, i) {
       return colors[i];
     });
 
     legend.append('text').text(function (d) {
       return '≥  ' + Math.round(d);
-    }).attr('x', function (d, i) {
-      return legendElementWidth * i;
-    }).attr('y', height + gridSize);
+    }).attr('x', width - gridSize * 3).attr('y', function (d, i) {
+      return legendElementHeight * i;
+    });
 
-    legend.exit().remove();
+    // legend.exit().remove();
   };
 
   return {

@@ -79,8 +79,8 @@ angular.module('profiler.services', [])
       dataEntries = dataEntries.sort((a, b) => a.key.localeCompare(b.key));
 
       const margin ={top:20, right:30, bottom:30, left:40},
-          width=960-margin.left - margin.right, 
-          height=500-margin.top-margin.bottom;
+          width=500-margin.left - margin.right, 
+          height=250-margin.top-margin.bottom;
 
       // scale to ordinal because x axis is not numerical
       const x = d3.scale.ordinal().rangeRoundBands([0, width], .1);
@@ -102,9 +102,8 @@ angular.module('profiler.services', [])
                     .scale(y)
                     .orient("left");
 
-      console.log('data', dataEntries.map(d => d.key));
       x.domain(dataEntries.map(d => d.key));
-      y.domain([0, d3.max(dataEntries, d => d.value)]);
+      y.domain([d3.min(dataEntries, d => d.value), d3.max(dataEntries, d => d.value)]);
 
       const bar = chart.selectAll("g")
                         .data(dataEntries)
@@ -153,16 +152,15 @@ angular.module('profiler.services', [])
         return result;
       }
 
-      let transitionData = proccessTransitions(data);
-      console.log(transitionData);
+      const transitionData = proccessTransitions(data);
       const margin = {top: 50, right: 0, bottom: 100, left: 30};
       const width = 600 - margin.left - margin.right;
-      const height = 600 - margin.top - margin.bottom;
-      const gridSize = Math.floor(width / 26);
-      const legendElementWidth = gridSize*2;
+      const height = 500 - margin.top - margin.bottom;
+      const gridSize = Math.floor(height / 26);
+      const legendElementHeight = gridSize*2;
       const buckets = 9; //number of color buckets. TODO: increase, update color scheme
       const colors = ["#ffffd9","#edf8b1","#c7e9b4","#7fcdbb","#41b6c4","#1d91c0","#225ea8","#253494","#081d58"];
-      const characters = _.range(48, 91).map(charCode => String.fromCharCode(charCode));
+      const characters = _.range(65, 91).map(charCode => String.fromCharCode(charCode));
 
       const svg = d3.select('#transitionChart')
                     .append('svg')
@@ -222,20 +220,19 @@ angular.module('profiler.services', [])
 
       legend.enter().append('g')
             .attr('class', 'legend');
-
       legend.append('rect')
-            .attr('x', (d,i) => legendElementWidth * i)
-            .attr('y', height)
-            .attr('width', legendElementWidth)
-            .attr('height', gridSize / 2)
+            .attr('x', width - gridSize * 5)
+            .attr('y', (d,i) => legendElementHeight * i)
+            .attr('width', gridSize / 2)
+            .attr('height', legendElementHeight)
             .style('fill', (d, i) => colors[i]);
 
       legend.append('text')
             .text(d => `≥  ${Math.round(d)}`)
-            .attr('x', (d, i) => legendElementWidth * i)
-            .attr('y', height + gridSize);
+            .attr('x', width - gridSize * 3)
+            .attr('y', (d, i) => legendElementHeight * i);
 
-      legend.exit().remove();
+      // legend.exit().remove();
     }
 
 
